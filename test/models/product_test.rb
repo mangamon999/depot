@@ -58,4 +58,13 @@ class ProductTest < ActiveSupport::TestCase
     assert_equal "has already been taken", product.errors[:title].join('; ')
   end
 
+  test "product is not valid whithout a unique title - i18n" do
+    product = Product.new(title: products(:ruby).title,
+                         description: "description for a new product",
+                         price: 1,
+                         image_url: "new.jpg")
+    assert !product.save   
+    assert_equal I18n.translate('activerecord.errors.messages.taken'), product.errors[:title].join('; '), "This is gonna be fixed when I learn about I18n"
+  end
+
 end
