@@ -18,3 +18,4 @@
 # Ignore vim editor files
 *.swp
 *.swo
+.DS_Store
