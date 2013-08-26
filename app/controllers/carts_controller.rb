@@ -55,6 +55,9 @@ class CartsController < ApplicationController
   # DELETE /carts/1.json
   def destroy
     @cart.destroy
+
+    session[:cart_id] = nil
+
     respond_to do |format|
       format.html { redirect_to carts_url }
       format.json { head :no_content }
@@ -66,7 +69,8 @@ class CartsController < ApplicationController
   def set_cart
 
     begin
-      @cart = Cart.find(params[:id])
+      #@cart = Cart.find(params[:id])
+      @cart = current_cart
     rescue ActiveRecord::RecordNotFound
       logger.error "Attempt to access invalid cart #{params[:id]}"
       redirect_to store_url, notice: 'Invalid cart'
