@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ProductsControllerTest < ActionController::TestCase
   setup do
-    @product = products(:one)
+    @product = products(:not_referenced)
     @update = {
       title: 'lorem ipsum',
       description: 'Wibbles are fun',

@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class LineItemsControllerTest < ActionController::TestCase
+  fixtures :line_items, :products
+
   setup do
     @line_item = line_items(:one)
   end
@@ -23,6 +25,32 @@ class LineItemsControllerTest < ActionController::TestCase
 
     assert_redirected_to cart_path(assigns(:line_item).cart)
   end
+
+  test "should not create new line item if product added again" do
+
+    session[:cart_id] = carts(:my_cart).id
+
+    assert_no_difference "LineItem.count" do
+      post :create, product_id: carts(:my_cart).line_items.first.product_id
+    end
+
+    assert_redirected_to cart_path(assigns(:line_item).cart)
+  end
+
+  test "should update line item quantity if product is addeed again" do
+
+    session[:cart_id] = carts(:my_cart).id
+    list_item = carts(:my_cart).line_items.first
+    initial_quantity = list_item.quantity
+
+    post :create, product_id: carts(:my_cart).line_items.first.product_id
+
+    list_item.reload
+    assert_equal list_item.quantity, initial_quantity + 1
+
+    assert_redirected_to cart_path(assigns(:line_item).cart)
+  end
+
 
   test "should show line_item" do
     get :show, id: @line_item

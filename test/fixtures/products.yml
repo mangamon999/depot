@@ -17,3 +17,9 @@ ruby:
   description: This is an awesome language
   image_url: ruby.jpg
   price: 49.99
+
+not_referenced:
+  title: Not referenced
+  description: No entity should reference this product
+  image_url: not_referenced.jpg
+  price: 99.99
