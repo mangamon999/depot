@@ -26,6 +26,13 @@ class LineItemsControllerTest < ActionController::TestCase
     assert_redirected_to cart_path(assigns(:line_item).cart)
   end
 
+  test "new item should copy product price into item" do
+    post :create, product_id: products(:ruby).id
+
+    line_item = LineItem.last
+    assert_equal line_item.price, line_item.product.price
+  end
+
   test "should not create new line item if product added again" do
 
     session[:cart_id] = carts(:my_cart).id
@@ -51,7 +58,6 @@ class LineItemsControllerTest < ActionController::TestCase
     assert_redirected_to cart_path(assigns(:line_item).cart)
   end
 
-
   test "should show line_item" do
     get :show, id: @line_item
     assert_response :success
@@ -72,6 +78,6 @@ class LineItemsControllerTest < ActionController::TestCase
       delete :destroy, id: @line_item
     end
 
-    assert_redirected_to line_items_path
+    assert_redirected_to @line_item.cart
   end
 end
