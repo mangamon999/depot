@@ -13,7 +13,7 @@ two:
   price: 9.99
 
 ruby:
-  title: Programming ruby 1.9
+  title: Programming Ruby 1.9
   description: This is an awesome language
   image_url: ruby.jpg
   price: 49.99

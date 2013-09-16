@@ -23,7 +23,18 @@ class LineItemsControllerTest < ActionController::TestCase
       post :create, product_id: products(:ruby).id
     end
 
-    assert_redirected_to cart_path(assigns(:line_item).cart)
+    assert_redirected_to store_path(assigns(:line_item).cart)
+  end
+
+  test "should create line item via ajax" do
+     assert_difference "LineItem.count" do
+        xhr :post, :create, product_id: products(:ruby).id
+     end
+
+     assert_response :success
+     assert_select_jquery :html, '#cart' do
+       assert_select 'tr#current_item td', /Programming Ruby 1.9/
+     end
   end
 
   test "new item should copy product price into item" do
@@ -41,7 +52,7 @@ class LineItemsControllerTest < ActionController::TestCase
       post :create, product_id: carts(:my_cart).line_items.first.product_id
     end
 
-    assert_redirected_to cart_path(assigns(:line_item).cart)
+    assert_redirected_to store_path(assigns(:line_item).cart)
   end
 
   test "should update line item quantity if product is addeed again" do
@@ -55,7 +66,7 @@ class LineItemsControllerTest < ActionController::TestCase
     list_item.reload
     assert_equal list_item.quantity, initial_quantity + 1
 
-    assert_redirected_to cart_path(assigns(:line_item).cart)
+    assert_redirected_to store_path(assigns(:line_item).cart)
   end
 
   test "should show line_item" do
